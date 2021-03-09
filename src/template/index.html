@@ -1,0 +1,278 @@
+<html>
+<head >
+
+<style> 
+@font-face {
+		src: url(./data/fonts/OpenSans-Regular.ttf);
+		font-family: opensans;
+}
+
+body {
+        font-family: opensans;
+		margin: 20;
+		
+      }
+</style>
+<style>
+#smallbox {
+    padding: 5px;
+    top: 10%;
+    height: 18%;
+    position: relative;
+}
+
+#smallbox2 {
+    padding: 5px;
+    top: 10%;
+    height: 18%;
+    position: relative;
+}
+
+#smallbox3 {
+    padding: 5px;
+    top: 10%;
+    height: 18%;
+    position: relative;
+}
+
+#smallbox4 {
+    padding: 5px;
+    top: 10%;
+    height: 18%;
+    position: relative;
+}
+</style>
+<style type="text/css">
+    .line {
+    fill: none;
+    stroke: #bbaf00;
+    stroke-width: 3;
+}
+  .overlay {
+  fill: none;
+  pointer-events: all;
+}
+
+#tooltip {
+				position: absolute;
+				width: 400px;
+				height: auto;
+				padding: 10px;
+				background-color: rgba(0,0,0,0.9);
+				border:1px solid grey;
+				color: white;
+				-webkit-border-radius: 10px;
+				-moz-border-radius: 10px;
+				border-radius: 10px;
+				-webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+				-moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+				box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+				pointer-events: none;
+				opacity: 0.8;
+			}
+			
+			#tooltip.hidden {
+				display: none;
+			}
+			
+			#tooltip p {
+				margin: 0;
+				font-family: sans-serif;
+				font-size: 16px;
+				line-height: 20px;
+			}
+			
+			#state {
+				font-weight: bold;
+			}
+
+			input[type="button"]{
+				padding:10px 5px;
+			}
+
+			input[type="number"]{
+				padding:10px 5px;
+				border:1px solid #ddd;
+			}
+
+			input[type="number"]:focus{
+				border:1px solid #fff
+			}
+
+			select{
+				padding:10px 5px;
+				border:1px solid #ddd;
+				width:200px;
+				text-align:center;
+				background:#fff;
+				box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+				cursor:pointer
+			}
+
+			option li{
+				background:red;
+			}
+
+
+			.header{
+				font-family: cursive;
+				background:#333;
+				color:#fff;
+				padding:10px 5px;
+				text-align:center;
+				border:2px solid #dedede
+			}
+
+			.footer{
+				margin-top:10px;
+				background:#369;
+				color:#fff;
+				padding:10px 5px;
+				text-align:center;
+				border:2px solid #dedede
+			}
+  </style>
+<meta charset="UTF-8">
+<title>Visualization and Modeling</title>
+</head>
+
+<body >
+
+	<div id="tooltip" class="hidden">
+			<p><span id="state">State</span></p>
+			<p><span id="acquired">100</span></p>
+			<p><span id="closed">100</span></p>
+			<p><span id="prob">100</span></p>
+    </div>
+	<div class="header">
+		Model development and Analysis of Startup Success Prediction
+	</div>
+
+    <div id="chart"></div>
+
+    <fieldset>
+        <legend>INPUT DATA</legend>
+        <section >
+        &nbsp;&nbsp;
+        CHOOSE A MODEL:  &nbsp;&nbsp;&nbsp;&nbsp;
+
+        <select id="modelname" onchange="chooseModel();displayOutput()">
+          <option disabled selected>Select Option</option>
+          <option value="model1"></option>
+          <option value="model3">Decision Trees</option>
+          <option value="model2">Random Forests</option>
+        </select>
+        <br/>
+        <br/>
+
+            <p id="optionSelectChangedValue"></p>
+
+        <table>
+        <tr>
+
+        <td>
+        <div id="smallbox2">
+        <!--MAX DEPTH:-->
+          <div>
+                <form>
+                <br/><input type="number" id=depth hidden><br>
+                <div id="option">
+          </div>
+        </form>
+
+          </div>
+        </div>
+        </td>
+
+        <td>
+        <div id="smallbox3">
+        <!--MAX LEAF NODES:-->
+          <div>
+                <form>
+                <br/><input type="number" id="leaf" hidden><br>
+                <div id="option">
+          </div>
+        </form>
+
+        </div>
+        </div>
+        </td>
+
+        <td>
+        <div id="smallbox4">
+        <!--NUMBER OF ESTIMATORS:-->
+          <div>
+                <form>
+                <br/><input type="number" id="estimators" hidden><br>
+                <div id="option">
+          </div>
+        </form>
+
+        </div>
+        </div>
+        </td>
+
+        <td>
+        <div id="smallbox">
+        <!--LEARNING RATE-->
+          <div>
+                <form>
+                <br/><input type="number" id="lr" hidden><br>
+                <div id="option"></div>
+        </form>
+
+        </div>
+        </div>
+        </td>
+        </tr>
+        </table>
+
+        <input name="updateButton"
+                   type="button"
+                   id = "train"
+                   value="Train model and draw ROC Curve"
+                   onclick="connectFlask()" style="display:none" />
+
+        <input name="visualize"
+               type="button"
+               id = "viz"
+               value="Train model, predict and visualize on new data"
+               onclick="visualize()" style="display:none" />
+
+        <div style=" display: inline;">
+
+        </div>
+
+        </section>
+
+    </fieldset><br>
+
+    <fieldset>
+        <legend>OUTPUT CHARTS</legend>
+        <div id="chart1"></div>
+    </fieldset>
+
+
+    <div class="footer">
+        Master Thisis Project
+    </div>
+	
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.13.0/d3-legend.js"></script>
+<script type="text/javascript" src="/static/js/main.js"></script>
+<script>
+    function displayOutput(){
+        var d=document.getElementById("modelname").value;
+        if(d=="model3"){
+            document.getElementById("optionSelectChangedValue").innerHTML="Decision Trees";
+        }else if(d=="model2"){
+            document.getElementById("optionSelectChangedValue").innerHTML="Random Forests";
+        }else if(d=="model1"){
+            document.getElementById("optionSelectChangedValue").innerHTML="Gradient Boosting";
+        }
+        document.getElementById("train").style.display="inline-block";
+        document.getElementById("viz").style.display="inline-block";
+    }
+</script>
+</body>
+</html>
